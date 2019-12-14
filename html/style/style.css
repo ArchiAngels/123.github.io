@@ -1,0 +1,19 @@
+body{
+    margin: 0;
+    height:100vh;
+    padding: 0;
+    background-image: linear-gradient(to right,#C6FFDD,#FBD786,#f7797d);
+}
+.wrap{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.someCanv{
+    width:0px;
+    height:0px;
+    background-color:white;
+    /* border:1px solid white; */
+}
