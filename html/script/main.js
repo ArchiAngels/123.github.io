@@ -40,6 +40,10 @@ let globCoorsApplX;
 let globCoorsApplY;
 let countEatedApple = 0;
 let AreaEated = 50;
+let SnakesX;
+let SnakesY;
+let arrSnakesX = [];
+let arrSnakesY = [];
 
 window.addEventListener('keydown', (e) => {
     if(event.keyCode === 37){
@@ -74,6 +78,19 @@ window.addEventListener('keydown', (e) => {
             countEatedApple++;
             CreateApple();
             console.log("Est!!",countEatedApple);
+            console.log(arrSnakesX,arrSnakesY);
+            
+        }
+        if(countEatedApple != 0){
+            SnakesX = globCoorsX - x -25;
+            SnakesY = globCoorsY - y;
+            arrSnakesX.push(SnakesX);
+            arrSnakesY.push(SnakesY);
+            for( i = 0; i < countEatedApple; i++){
+                ctx.beginPath();
+                ctx.rect(arrSnakesX[i],arrSnakesY[i],20,20);
+                ctx.stroke();
+            }
         }
         ctx.rect(globCoorsX - x,globCoorsY - y,20,20);
         globCoorsX = globCoorsX - x;
