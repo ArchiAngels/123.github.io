@@ -10,16 +10,66 @@ window.addEventListener('click', () => {
     else{
         // createElem();
         // createSnake();
-        CreateApple();
+        // CreateApple();
     }
 })
-let sukinDelay = 4;
+let sukinDelay = 150;
 let bx = 0;
 let by = 0;
 let xx = 10;
 let yy = 10;
 let cnv = document.querySelector('.someCanv');
 let ctx = cnv.getContext("2d");
+
+let btnBot = document.querySelector('.checker');
+let btnCount = 0;
+
+
+
+btnBot.addEventListener('mousemove', () =>{
+    btnCount++;
+    if(btnCount === 1){
+        // console.log('Auto mode ON',btnCount,globCoorsX,globCoorsY,globCoorsApplX,globCoorsApplY);
+            if(globCoorsX < globCoorsApplX){
+                botOn(-10,0);
+            }
+            if(globCoorsY < globCoorsApplY){
+                botOn(0,-10);
+            }
+            if(globCoorsX > globCoorsApplX){
+                botOn(10,0);
+            }
+            if(globCoorsY > globCoorsApplY){
+                botOn(0,10);
+            }
+        function botOn(x,y){
+            // console.log(globCoorsX,globCoorsY);
+                ctx.clearRect(0, 0, cnv.width, cnv.height);
+                ctx.beginPath();
+                ctx.rect(globCoorsX - x,globCoorsY - y,20,20);
+                globCoorsX = globCoorsX -x;
+                globCoorsY = globCoorsY -y;
+                ctx.fillStyle = "red";
+                ctx.fillRect(globCoorsApplX, globCoorsApplY, 20, 20);
+                ctx.stroke();
+                // requestAnimationFrame(botOn);
+            
+            // setTimeout(sukaDelay(botOn(),sukinDelay));
+        }
+        if( (globCoorsX < globCoorsApplX +AreaEated && globCoorsX > globCoorsApplX -AreaEated) 
+            && (globCoorsY < globCoorsApplY+ AreaEated && globCoorsY > globCoorsApplY -AreaEated)){
+            countEatedApple++;
+            CreateApple();
+            console.log("Est!!",countEatedApple);
+            blackIsOff();    
+        }
+    }
+    else{
+        btnCount = 0;
+        // console.log('Auto mode Off',btnCount);
+    }
+    
+})
 
 let RedQuader = 0;
 let BlackQuader = 0;
@@ -40,10 +90,18 @@ let globCoorsApplX;
 let globCoorsApplY;
 let countEatedApple = 0;
 let AreaEated = 50;
-let SnakesX;
-let SnakesY;
-let arrSnakesX = [];
-let arrSnakesY = [];
+
+let tetr = document.querySelector('.titr');
+function blackIsOff(){
+    if(countEatedApple %5 == 0){
+        console.log('ooops');
+        tetr.classList.remove('hidden');
+        window.scrollBy(0,1000);
+    }
+}
+tetr.addEventListener('click', () =>{
+    tetr.classList.add('hidden');
+})
 
 window.addEventListener('keydown', (e) => {
     if(event.keyCode === 37){
@@ -77,20 +135,8 @@ window.addEventListener('keydown', (e) => {
             && (globCoorsY < globCoorsApplY+ AreaEated && globCoorsY > globCoorsApplY -AreaEated)){
             countEatedApple++;
             CreateApple();
-            console.log("Est!!",countEatedApple);
-            console.log(arrSnakesX,arrSnakesY);
-            
-        }
-        if(countEatedApple != 0){
-            SnakesX = globCoorsX - x -25;
-            SnakesY = globCoorsY - y;
-            arrSnakesX.push(SnakesX);
-            arrSnakesY.push(SnakesY);
-            for( i = 0; i < countEatedApple; i++){
-                ctx.beginPath();
-                ctx.rect(arrSnakesX[i],arrSnakesY[i],20,20);
-                ctx.stroke();
-            }
+            console.log("Est!!",countEatedApple); 
+            blackIsOff();       
         }
         ctx.rect(globCoorsX - x,globCoorsY - y,20,20);
         globCoorsX = globCoorsX - x;
@@ -119,6 +165,7 @@ function createZmei(){
 }
 
 createZmei();
+CreateApple();
 
 function CreateApple(){
     let coordinateOfSpawnX = parseInt((Math.random() * cnv.width).toFixed(2)) ;
