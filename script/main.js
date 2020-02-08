@@ -1,6 +1,6 @@
 let key = 0;
 window.addEventListener('load', ()=>{
-    document.querySelector('.CurrentSpeed').innerHTML = 'Current Speed: '+speedSnake.value;        
+    document.querySelector('.CurrentSpeed').innerHTML = 'Current Speed: '+speedSnake.value;       
 })
 window.addEventListener('click', () => {
     key++;
@@ -48,7 +48,7 @@ btnBot.addEventListener('mousemove', () =>{
         }
         else{
             KeyYy = 0;
-                KeyXxx =1;
+            KeyXxx =1;
         }
                     if(globCoorsX < globCoorsApplX && KeyXxx ==1 ){
                             botOn(-speedSnake.value,0);
@@ -74,7 +74,6 @@ btnBot.addEventListener('mousemove', () =>{
                 && (globCoorsY <= globCoorsApplY+ AreaEated && globCoorsY >= globCoorsApplY -AreaEated)){
                 countEatedApple++;
                 CreateApple();
-                console.log("Est!!",countEatedApple);
             }
             
         }
@@ -130,7 +129,6 @@ function createRelZmei(x,y){
     UpdtTwo();
 }
 function UpdtTwo(){
-    console.log('Uped');
     for(i  = 0 ; i < countEatedApple; i++){
         ctx.font = "10px Arial";
         ctx.strokeText(i, XxCoords[i], YyCoords[i]);
@@ -182,7 +180,6 @@ let globCoorsApplX;
 let globCoorsApplY;
 let countEatedApple = 0;
 let AreaEated = speedSnake.value;
-let tmpVariable = 0;
 
 
 window.addEventListener('keydown', (e) => {
@@ -206,12 +203,10 @@ window.addEventListener('keydown', (e) => {
         courseOfSnake = 'Down';
         CreateChildSnake(courseOfSnake); 
     }
-    tmpVariable++;
                 if( (globCoorsX <= globCoorsApplX +AreaEated && globCoorsX >= globCoorsApplX -AreaEated) 
                     && (globCoorsY <= globCoorsApplY+ AreaEated && globCoorsY >= globCoorsApplY -AreaEated)){
                     countEatedApple++;
                     CreateApple();
-                    console.log("Est!!",countEatedApple); 
                 }
                     if(globCoorsX > cnv.width){
                         globCoorsX = 0;
@@ -229,7 +224,6 @@ window.addEventListener('keydown', (e) => {
                         globCoorsY = cnv.height;
                         // UpdtTwo();
                     }
-    tmpVariable--;
 })
 
 
@@ -302,3 +296,205 @@ function createElem(){
 function sukaDelay(n){
     setTimeout(n,sukinDelay);
 }
+
+let jopaDrun = 0;
+let hhjopa;
+cnv.addEventListener('click', ()=>{
+    jopaDrun++;
+    if(jopaDrun == 1){
+        hhjopa = setInterval(poshelNahui,30);
+    }
+    if(jopaDrun == 2){
+        jopaDrun = 0;
+        clearInterval(hhjopa);
+    }
+    VerificationLocaation(globCoorsX,globCoorsY,globCoorsApplX,globCoorsApplY);
+})
+
+let jopall;
+function VerificationLocaation(ax,ay,x,y){
+    let y1,y2,x1;
+    let y1h,y2h,x2;
+
+    if(ax > cnv.width && jopall != 1){
+        // console.log('1');
+        globCoorsX = 0;
+        ax = globCoorsY;
+        jopall = 1;
+        setTimeout(KakRZeAaaaa,600);
+    }
+    if(ay > cnv.height && jopall != 1){
+        // console.log('2');
+        globCoorsY = 0;
+        ay = globCoorsY;
+        jopall = 1;
+        setTimeout(KakRZeAaaaa,600);
+    }
+    if(ax < 0 && jopall != 1){
+        // console.log('3');
+        globCoorsX = cnv.width;
+        ax = globCoorsY;
+        jopall = 1;
+        setTimeout(KakRZeAaaaa,600);
+    }
+    if(ay < 0 && jopall != 1){
+        // console.log('4');
+        globCoorsY = cnv.height;
+        ay = globCoorsY;
+        jopall = 1;
+        setTimeout(KakRZeAaaaa,600);
+    }
+
+
+    let bb,nn;
+    if(Math.max(x - ax,ax - x) > Math.max(y - ay,ay - y)){
+        bb = 0;
+        nn = 1;
+    }
+    if( (Math.max(x - ax,ax - x) >= -20 && Math.max(x - ax,ax - x) <= 20) && Math.max(y - ay,ay -y) > Math.max(x - ax,ax - x)){
+        nn = 0;
+        bb = 1;
+    }
+    else{
+        bb = 0;
+        nn = 1;
+    }
+
+    if( ax >= x){
+        // console.log('AG1');
+        y2 = ax;
+        y1 = x;
+        x1 = (Math.max(y1-y2,y2-y1));
+    }
+    if( x > ax){
+        // console.log('EB2');
+        y1 = ax;
+        y2 = x;
+        x1 = (Math.max(y1-y2,y2-y1));
+    }
+
+    // console.log(Math.max(y1-y2,y2-y1));
+    // console.log('y1: ',y1,'y2: ',y2,'CNV_WIDTH: ',cnv.width,'x1: ',x1,'y1+y2: ',y1+(cnv.width -y2), 'x1 > y1+y2: ',x1 > y1+(cnv.width -y2),'x1 < y1+y2: ',x1 < y1+(cnv.width -y2));
+
+
+    if( x1 <= y1 + ( cnv.width - y2) ){
+        if( ax <= x && nn == 1 ){
+            // console.log('Go in Right');
+            botOn(-speedSnake.value,0);
+            courseOfSnake = 'Right';
+            CreateChildSnake(courseOfSnake); 
+        }
+        if( ax >= x && nn == 1 ){
+            // console.log('Go in Left');
+            botOn(speedSnake.value,0);
+            courseOfSnake = 'Left';
+            CreateChildSnake(courseOfSnake); 
+        }
+    }
+    else{
+        if( ax <= x && nn == 1 ){
+            // console.log('Go out Left');
+            botOn(speedSnake.value,0);
+            courseOfSnake = 'Left';
+            CreateChildSnake(courseOfSnake); 
+        }
+        if( ax >= x && nn == 1 ){
+            // console.log('Go out Right');
+            botOn(-speedSnake.value,0);
+            courseOfSnake = 'Right';
+            CreateChildSnake(courseOfSnake); 
+        }
+    }
+
+    if( ay >= y ){
+        // console.log('HH1');
+        y2h = ay;
+        y1h = y;
+        x2 = (Math.max(y1h-y2h,y2h-y1h));
+    }
+    if(y > ay){
+        // console.log('HH2');
+        y1h = ay;
+        y2h = y;
+        x2 = (Math.max(y1h-y2h,y2h-y1h));
+    }
+    // console.log('y1: ',y1,'y2: ',y2,'CNV_WIDTH: ',cnv.width,'x1: ',x1,'y1+y2: ',y1+(cnv.width -y2), 'x1 > y1+y2: ',x1 > y1+(cnv.width -y2),'x1 < y1+y2: ',x1 < y1+(cnv.width -y2));
+    // console.log('x2: ',x2,'y1h: ',y1h,'y2h: ',y2h,'cnvHeight:',cnv.height,'y1h+y2h:',y1h + ( cnv.height - y2h),'x2 > y1h+y2h:',x2>y1h + ( cnv.height - y2h),'x2 < y1h+y2h:',x2<y1h + ( cnv.height - y2h));
+    if( x2 <= y1h + ( cnv.height - y2h) ){
+        // console.log('UP_IF: ',ay > y,'DoWN_IF: ',ay < y ,'Y: ',y,'AY: ',ay);
+        if( ay < y && bb == 1){
+            // console.log('Go in Down');
+            botOn(0,-speedSnake.value);
+            courseOfSnake = 'Down';
+            CreateChildSnake(courseOfSnake); 
+        }
+        if( ay > y && bb == 1){
+            // console.log('Go in Up');
+            botOn(0,speedSnake.value);
+            courseOfSnake = 'Up';
+            CreateChildSnake(courseOfSnake); 
+        }
+    }
+    else{
+        // console.log('UP_ELSE: ',ay < y ,'DoWN_ELSE: ',ay > y );
+        if( ay < y && bb == 1){
+            // console.log('Go out Up');
+            botOn(0,speedSnake.value);
+            courseOfSnake = 'Up';
+            CreateChildSnake(courseOfSnake); 
+        }
+        if( ay > y  && bb == 1){
+            // console.log('Go out Down');
+            botOn(0,-speedSnake.value);
+            courseOfSnake = 'Down';
+            CreateChildSnake(courseOfSnake); 
+        }
+    }
+
+    
+    // if(  ax <= x && nn == 1 ){
+    //     botOn(-speedSnake.value,0);
+    //     courseOfSnake = 'Right';
+    //     CreateChildSnake(courseOfSnake);  
+    //     if(((ax >= x && nn == 1) &&  x1 >= y1+(cnv.width -y2)) && keyy == 1){
+    //         botOn(-speedSnake.value,0);
+    //         keyy = 0;
+    //     }
+        
+    // }
+    // if( ax > x && nn == 1){
+    //     botOn(speedSnake.value,0);
+    //     courseOfSnake = 'Left';
+    //     CreateChildSnake(courseOfSnake);             
+    //     if(((ax < x && nn == 1) && x1 > y1+(cnv.width -y2)) && keyy == 1){
+    //         botOn(speedSnake.value,0);
+    //         keyy = 0;
+    //     }
+    // }
+    // if(ay > y && bb == 1 ){
+    //     botOn(0,speedSnake.value);
+    //     courseOfSnake = 'Up';
+    //     // console.log('up',ax,ay);
+    //     CreateChildSnake(courseOfSnake);                        
+    // }
+    // if(ay < y && bb == 1 ){
+    //     botOn(0,-speedSnake.value);
+    //     courseOfSnake = 'Down';
+    //     // console.log('down',ax,ay);
+    //     CreateChildSnake(courseOfSnake); 
+    // }
+    if( (ax <= x +AreaEated && ax >= x -AreaEated) 
+            && (ay <= y+ AreaEated && ay >= y -AreaEated)){
+            countEatedApple++;
+            CreateApple();
+    }
+}
+function KakRZeAaaaa(){
+    // console.log('Gates is Open',jopall == 0);
+    jopall = 0;
+    // console.log('Gates is Open',jopall == 0);
+}
+function poshelNahui(){
+    VerificationLocaation(globCoorsX,globCoorsY,globCoorsApplX,globCoorsApplY);
+}
+
